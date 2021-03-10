@@ -1,6 +1,7 @@
 <html>
     <head>
         <title>Priyo Pujonggo </title>
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
         <style>
             body{
                 font-family: sans-serif;

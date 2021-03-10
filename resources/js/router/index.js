@@ -11,12 +11,13 @@ import User from '../pages/User.vue'
 
 
 const routes = [
-    { path: '/home', component: Home },
-    {path:'/about', component: About},
-    {path:'/user/:name?', component: User},
+    { name: 'Home', path: '/home', component: Home },
+    {name: 'About',path:'/about', component: About},
+    {name: 'User',path:'/user/:username?', component: User, props:true},
     { path:'*', component:NotFound}
 ]
 const router = new VueRouter({
+    linkActiveClass: 'active',
     mode:'history',
    routes 
 })
