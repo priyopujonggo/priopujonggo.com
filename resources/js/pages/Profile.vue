@@ -1,7 +1,11 @@
 <template>
 <div>
-   
-    <section>
+    <section v-if="id">
+        <h1>Hello {{detailuser.name}}</h1>
+        <router-link :to="{name: 'User'}">Back</router-link>
+        
+    </section>
+    <section v-else>
         <h1>Daftar User</h1>
         <ul>
             <li v-for="user in users" v-bind:key="user.id">
@@ -15,10 +19,10 @@
 </template>
 <script>
 export default {
-
+    props :['id'],
     data(){
         return{
-            users:[]
+            detailuser: {}
         }
     },
     watch:{
@@ -39,18 +43,12 @@ export default {
              axios.get('/api/users').then((response) => {
             console.log(response)
             this.users = response.data
+            if(this.id){
+                this.detailuser = this.users.filter(item => item.id == this.id)[0]
+                console.log(this.detailuser)
+            }
             })
-        },
-        profile_uri(name){
-            return '/user/' +name.toLowerCase()
-        },
-        lihatuser(id){
-            // this.$router.push('/user/' +name.toLowerCase())
-            this.$router.push({
-                name: 'Profiley',
-                // params: {username: name.toLowerCase()}
-                params: {id}
-            })
+        }
         }
     }
 }
