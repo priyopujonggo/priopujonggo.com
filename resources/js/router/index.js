@@ -11,8 +11,10 @@ import User from '../pages/User.vue'
 import Profile from '../pages/Profile.vue'
 
 
+
 const routes = [
     { name: 'Home', path: '/home', component: Home },
+   
     {name: 'About',path:'/about', component: About},
     // {name: 'User',path:'/user/:username?', component: User, props:true}
     {name: 'User',path:'/user', component: User},

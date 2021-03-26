@@ -1873,9 +1873,49 @@ __webpack_require__.r(__webpack_exports__);
 /*!*********************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/pages/Profile.vue?vue&type=script&lang=js& ***!
   \*********************************************************************************************************************************************************************************************************/
-/***/ (() => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nSyntaxError: C:\\xampp\\htdocs\\prio\\resources\\js\\pages\\Profile.vue: Unexpected token (54:0)\n\n  52 |         }\n  53 |     }\n> 54 | }\n     | ^\n  55 |\n    at Parser._raise (C:\\xampp\\htdocs\\prio\\node_modules\\@babel\\parser\\lib\\index.js:776:17)\n    at Parser.raiseWithData (C:\\xampp\\htdocs\\prio\\node_modules\\@babel\\parser\\lib\\index.js:769:17)\n    at Parser.raise (C:\\xampp\\htdocs\\prio\\node_modules\\@babel\\parser\\lib\\index.js:737:17)\n    at Parser.unexpected (C:\\xampp\\htdocs\\prio\\node_modules\\@babel\\parser\\lib\\index.js:9686:16)\n    at Parser.parseExprAtom (C:\\xampp\\htdocs\\prio\\node_modules\\@babel\\parser\\lib\\index.js:11078:20)\n    at Parser.parseExprSubscripts (C:\\xampp\\htdocs\\prio\\node_modules\\@babel\\parser\\lib\\index.js:10655:23)\n    at Parser.parseUpdate (C:\\xampp\\htdocs\\prio\\node_modules\\@babel\\parser\\lib\\index.js:10635:21)\n    at Parser.parseMaybeUnary (C:\\xampp\\htdocs\\prio\\node_modules\\@babel\\parser\\lib\\index.js:10613:23)\n    at Parser.parseExprOps (C:\\xampp\\htdocs\\prio\\node_modules\\@babel\\parser\\lib\\index.js:10474:23)\n    at Parser.parseMaybeConditional (C:\\xampp\\htdocs\\prio\\node_modules\\@babel\\parser\\lib\\index.js:10448:23)\n    at Parser.parseMaybeAssign (C:\\xampp\\htdocs\\prio\\node_modules\\@babel\\parser\\lib\\index.js:10411:21)\n    at Parser.parseExpressionBase (C:\\xampp\\htdocs\\prio\\node_modules\\@babel\\parser\\lib\\index.js:10356:23)\n    at C:\\xampp\\htdocs\\prio\\node_modules\\@babel\\parser\\lib\\index.js:10350:39\n    at Parser.allowInAnd (C:\\xampp\\htdocs\\prio\\node_modules\\@babel\\parser\\lib\\index.js:12045:16)\n    at Parser.parseExpression (C:\\xampp\\htdocs\\prio\\node_modules\\@babel\\parser\\lib\\index.js:10350:17)\n    at Parser.parseStatementContent (C:\\xampp\\htdocs\\prio\\node_modules\\@babel\\parser\\lib\\index.js:12333:23)");
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ['id'],
+  data: function data() {
+    return {
+      detailuser: {}
+    };
+  },
+  mounted: function mounted() {
+    this.getUser(); // fetch('/api/users')
+    // .then(response => response.json())
+    // .then(data => {
+    //     console.log(data)
+    //     this.users = data
+    //     })
+  },
+  methods: {
+    getUser: function getUser() {
+      var _this = this;
+
+      axios.get('/api/users/' + this.id).then(function (response) {
+        console.log(response);
+        _this.detailuser = response.data;
+      });
+    }
+  }
+});
 
 /***/ }),
 
@@ -1911,9 +1951,6 @@ __webpack_require__.r(__webpack_exports__);
       users: []
     };
   },
-  watch: {
-    '$route': 'getUsers'
-  },
   mounted: function mounted() {
     this.getUsers(); // fetch('/api/users')
     // .then(response => response.json())
@@ -1937,7 +1974,7 @@ __webpack_require__.r(__webpack_exports__);
     lihatuser: function lihatuser(id) {
       // this.$router.push('/user/' +name.toLowerCase())
       this.$router.push({
-        name: 'Profiley',
+        name: 'Profile',
         // params: {username: name.toLowerCase()}
         params: {
           id: id
@@ -38162,39 +38199,20 @@ var render = function() {
       ? _c(
           "section",
           [
-            _c("h1", [_vm._v("Hello " + _vm._s(_vm.detailuser.name))]),
+            _c("h1", [_vm._v("Hello " + _vm._s(_vm.detailuser.name) + ".")]),
+            _vm._v(" "),
+            _c("p", [
+              _vm._v("Email :"),
+              _c("strong", [_vm._v(_vm._s(_vm.detailuser.email))])
+            ]),
             _vm._v(" "),
             _c("router-link", { attrs: { to: { name: "User" } } }, [
-              _vm._v("Back")
+              _vm._v("Kembali")
             ])
           ],
           1
         )
-      : _c("section", [
-          _c("h1", [_vm._v("Daftar User")]),
-          _vm._v(" "),
-          _c(
-            "ul",
-            _vm._l(_vm.users, function(user) {
-              return _c("li", { key: user.id }, [
-                _c(
-                  "a",
-                  {
-                    attrs: { href: "" },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        return _vm.lihatuser(user.id)
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s(user.name))]
-                )
-              ])
-            }),
-            0
-          )
-        ])
+      : _vm._e()
   ])
 }
 var staticRenderFns = []
@@ -38227,7 +38245,7 @@ var render = function() {
       _c(
         "ul",
         _vm._l(_vm.users, function(user) {
-          return _c("li", { key: user.id }, [
+          return _c("li", [
             _c(
               "a",
               {
