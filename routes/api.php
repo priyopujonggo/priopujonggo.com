@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AlamatController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -21,4 +22,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/users', [AuthController::class, 'index']);
 Route::post('/users', [AuthController::class, 'store']);
 Route::get('/users/{id}', [AuthController::class, 'show']);
+Route::get('/about', [AlamatController::class, 'index']);
+
+
 
