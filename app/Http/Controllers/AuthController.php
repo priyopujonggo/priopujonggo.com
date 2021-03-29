@@ -19,4 +19,13 @@ class AuthController extends Controller
         $user = User::find($id);
         return response()->json($user);
     }
+    public function store(Request $request)
+    {
+        $user = new User;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = $request->password;
+        $user->save();
+        return $user;
+    }
 }
