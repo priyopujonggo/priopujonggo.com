@@ -1880,21 +1880,32 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue2_google_maps__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue2-google-maps */ "./node_modules/vue2-google-maps/dist/main.js");
 //
 //
 //
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  computed: {
-    google: vue2_google_maps__WEBPACK_IMPORTED_MODULE_0__.gmapApi
-  },
   data: function data() {
     return {
-      alamats: []
+      alamats: [],
+      coordinates: {
+        lat: 0,
+        lng: 0
+      }
     };
   },
   created: function created() {
@@ -1906,6 +1917,14 @@ __webpack_require__.r(__webpack_exports__);
     })["catch"](function (error) {
       return console.error(error);
     });
+  },
+  methods: {
+    getPosition: function getPosition(r) {
+      return {
+        lat: parseFloat(r.latitude),
+        lng: parseFloat(r.longitude)
+      };
+    }
   }
 });
 
@@ -1937,23 +1956,106 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      alamats: [],
+      infoWindowOption: {
+        pixelOffset: {
+          width: 0,
+          height: -35
+        }
+      },
+      activeAlamat: {},
+      infoWindowOpened: false,
       coordinates: {
         lat: 0,
         lng: 0
       }
     };
   },
+  // created() {
+  //     this.$getLocation({})
+  //     .then(coordinates => {
+  //         this.coordinates = coordinates;
+  //     })
+  //     .catch(error => alert(error));
+  // }
   created: function created() {
     var _this = this;
 
-    this.$getLocation({}).then(function (coordinates) {
-      _this.coordinates = coordinates;
+    axios.get('/api/map').then(function (response) {
+      console.log(response);
+      _this.alamats = response.data;
     })["catch"](function (error) {
-      return alert(error);
+      return console.error(error);
     });
+  },
+  methods: {
+    getPosition: function getPosition(r) {
+      return {
+        lat: parseFloat(r.latitude),
+        lng: parseFloat(r.longitude)
+      };
+    },
+    handleMarkerClicked: function handleMarkerClicked(r) {
+      this.activeAlamat = r;
+      this.infoWindowOpened = true;
+    },
+    handleInfoWindowClose: function handleInfoWindowClose() {
+      this.activeAlamat = {};
+      this.infoWindowOpened = false;
+    },
+    handleMapClick: function handleMapClick(e) {
+      this.alamats.push({
+        nama: "Placeholder",
+        hours: "00:00am-00:00pm",
+        city: "Purbalingga",
+        state: "Jawa Tengah",
+        latitude: e.latLng.lat(),
+        longitude: e.latLng.lng()
+      });
+    }
+  },
+  computed: {
+    mapCenter: function mapCenter() {
+      if (!this.alamats.length) {
+        return {
+          lat: 10,
+          lng: 10
+        };
+      }
+
+      return {
+        lat: parseFloat(this.alamats[0].latitude),
+        lng: parseFloat(this.alamats[0].longitude)
+      };
+    },
+    infoWindowPosition: function infoWindowPosition() {
+      return {
+        lat: parseFloat(this.activeAlamat.latitude),
+        lng: parseFloat(this.activeAlamat.longitude)
+      };
+    }
   }
 });
 
@@ -2156,7 +2258,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js"
 vue__WEBPACK_IMPORTED_MODULE_3__.default.use((vue_browser_geolocation__WEBPACK_IMPORTED_MODULE_1___default()));
 vue__WEBPACK_IMPORTED_MODULE_3__.default.use(vue2_google_maps__WEBPACK_IMPORTED_MODULE_2__, {
   load: {
-    key: 'AIzaSyArpauKkohsTnowklVHeaskn5aeEMLtXxU'
+    key: 'AIzaSyB-gEZ1e-dtIaBR23O9Q_RwqnpnwIUURr0'
   }
 });
 vue__WEBPACK_IMPORTED_MODULE_3__.default.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue").default);
@@ -39654,7 +39756,43 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("h1", [_vm._v("About")])
+  return _c(
+    "div",
+    [
+      _c("h1", [_vm._v("About")]),
+      _vm._v(" "),
+      _c("h1", [_vm._v("Your Coordinates")]),
+      _vm._v(" "),
+      _c("p", [
+        _vm._v(
+          _vm._s(_vm.coordinates.lat) +
+            " Latitude, " +
+            _vm._s(_vm.coordinates.lng) +
+            " Longitude "
+        )
+      ]),
+      _vm._v(" "),
+      _c(
+        "gmap-map",
+        {
+          staticStyle: { width: "100%", height: "440px" },
+          attrs: { center: { lat: 10, lng: 10 }, zoom: 7 }
+        },
+        _vm._l(_vm.alamats, function(r) {
+          return _c("gmap-marker", {
+            key: r.id,
+            attrs: {
+              position: _vm.getPosition(r),
+              clickable: true,
+              draggable: false
+            }
+          })
+        }),
+        1
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -39722,18 +39860,64 @@ var render = function() {
         "gmap-map",
         {
           staticStyle: { width: "100%", height: "440px" },
-          attrs: { center: { lat: 10, lng: 10 }, zoom: 7 }
+          attrs: { center: _vm.mapCenter, zoom: 10 },
+          on: { click: _vm.handleMapClick }
         },
         [
-          _c("gmap-marker", {
-            attrs: {
-              position: { lat: 10, lng: 10 },
-              clickable: true,
-              draggable: false
-            }
+          _c(
+            "gmap-info-window",
+            {
+              attrs: {
+                option: _vm.infoWindowOption,
+                position: _vm.infoWindowPosition,
+                opened: _vm.infoWindowOpened
+              },
+              on: { closeclick: _vm.handleInfoWindowClose }
+            },
+            [
+              _c("div", { staticClass: "info-window" }, [
+                _c("h2", {
+                  domProps: { textContent: _vm._s(_vm.activeAlamat.nama) }
+                }),
+                _vm._v(" "),
+                _c("h5", {
+                  domProps: {
+                    textContent: _vm._s("Hours: " + _vm.activeAlamat.hours)
+                  }
+                }),
+                _vm._v(" "),
+                _c("p", {
+                  domProps: { textContent: _vm._s(_vm.activeAlamat.address) }
+                }),
+                _vm._v(" "),
+                _c("p", {
+                  domProps: {
+                    textContent: _vm._s(
+                      _vm.activeAlamat.city + ", " + _vm.activeAlamat.state
+                    )
+                  }
+                })
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _vm._l(_vm.alamats, function(r) {
+            return _c("gmap-marker", {
+              key: r.id,
+              attrs: {
+                position: _vm.getPosition(r),
+                clickable: true,
+                draggable: false
+              },
+              on: {
+                click: function($event) {
+                  return _vm.handleMarkerClicked(r)
+                }
+              }
+            })
           })
         ],
-        1
+        2
       )
     ],
     1
